@@ -38,7 +38,7 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
               metrics=['accuracy'])
 
 # Train the model
-model.fit(x_train, y_train, epochs=15, validation_split=0.2)
+model.fit(x_train, y_train, epochs = 25, validation_split = 0.2)
 print("MLP succesfully trained")
 
 # dump the model to a joblib file

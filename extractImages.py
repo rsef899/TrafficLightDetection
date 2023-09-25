@@ -11,7 +11,7 @@ flat_images = []
 target_image_labels = []
 
 #else mount the drive and give path of the parent-folder containing all category images folders.
-datadir='Z:\TrafficLightDetection\kaggleDataset\myData'
+datadir='C:\PcOnOneDrive\TrafficLightDetection\kaggleDataset\myData'
 
 Categories=[]
 
