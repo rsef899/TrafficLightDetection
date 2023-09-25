@@ -4,38 +4,50 @@ from skimage.transform import resize
 from skimage.io import imread
 import numpy as np
 import pandas as pd
-import pickle
+import joblib
 
 
-flat_data_arr=[]
-target_arr=[]
+flat_images = []
+target_image_labels = []
 
 #else mount the drive and give path of the parent-folder containing all category images folders.
-datadir='C:\PcOnOneDrive\TrafficLightDetection\kaggleDataset\myData'
+datadir='Z:\TrafficLightDetection\kaggleDataset\myData'
 
 Categories=[]
 
 for i in range(43):
   Categories.append(f"{i}")
 
-
+# go through every class
 for i in Categories:
   print(f'loading... category : {i}')
-  path=os.path.join(datadir,i)
+  #get the path of the classes folder
+  path = os.path.join(datadir,i)
+
+  # go through every image in that classes folder
   for img in os.listdir(path):
+
+    #if the item is not an image skip over it
     if (".jpg" not in img) and (".png" not in img):
         continue
+    
+    # read the image
+    img_array = imread(os.path.join(path,img))
+    # force resize of the image
+    img_resized = resize(img_array, (32, 32, 3))
+    # flatten the image and add it to the array of images
+    flat_images.append(img_resized.flatten())
+    # append its class to teh array of target labels
+    target_image_labels.append(Categories.index(i))
 
-
-    img_array=imread(os.path.join(path,img))
-    img_resized=resize(img_array,(150,150,3))
-    flat_data_arr.append(img_resized.flatten())
-    target_arr.append(Categories.index(i))
   print(f'loaded category:{i} successfully')
 
-flat_data=np.array(flat_data_arr)
-target=np.array(target_arr)
-df=pd.DataFrame(flat_data)
-df['Target']=target
-df.to_pickle("firstTestExtract.pkl")
-print("loaded to pickle file")
+flat_data = np.array(flat_images)
+target = np.array(target_image_labels)
+# create a dataframe to combine the image data and labels
+df = pd.DataFrame(flat_data)
+df['Target'] = target
+
+# serialise the dataset dataframe 
+joblib.dump(df, 'dataset.joblib')
+print("Dumped to joblib file")
