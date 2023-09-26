@@ -1,12 +1,9 @@
 import pandas as pd
-
-
-
-
 def getLabels():
     return pd.read_csv('kaggleDataset/labels.csv')  
 
-def findCorresponding(index):
+def findCorresponding(prediction):
     allLabels = getLabels()
-    return allLabels['Name'][index]
+
+    return allLabels['Name'][prediction]
 
